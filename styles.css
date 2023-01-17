@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 
@@ -11,14 +12,22 @@ body {
 }
 
 header{
-    position: fixed;
+    position: relative;
+    height: .5rem;
     top: 0;
     width: 100%;
-    background-color: red;
 }
 
 .nav-menu li {
     list-style: none;
+    width: 10rem;
+    margin-right: 5rem;
+    font-size: 1.4rem;
+    border-radius: 10px;
+}
+
+.nav-menu li:hover{
+    background-color: #F0BB32;
 }
 
 .nav-menu a{
@@ -26,7 +35,7 @@ header{
     text-decoration: none;
 }
 
-h1 {
+h1, h2, h3, p {
     color: white;
 }
 
@@ -66,3 +75,17 @@ h1 {
     margin-top: 70px;
     border: 1px solid white;
 }
+
+.recipe-grid{
+    display: block;
+    padding: 16px;
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.col{
+    background-color: gray;
+    margin-bottom: 16px;
+}
+
