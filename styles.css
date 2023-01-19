@@ -127,10 +127,16 @@ h1, h2, h3, p {
     transform: translateY(110%);
     transition: transform 1s ease-in-out;
     opacity: 0;
+    height: 3rem;
 }
 
 .recipe-description:hover .bottom {
     transform: translateY(0%);
-    opacity:1;
+    opacity: 1;
     background-color: black;
+}
+
+.recipe-description p, .bottom p {
+    margin: 5px;
+    text-align: center;
 }
