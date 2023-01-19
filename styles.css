@@ -105,9 +105,32 @@ h1, h2, h3, p {
 
 .recipe-description {
     background-color: gray;
+    opacity: 0.5;
     font-size: small;
     margin: 0px;
     position: absolute;
     bottom: 0;
+    left: 0;
+    height: 5rem;
     border-radius: 3px;
+    transition: all 1s ease-in-out;
+    transform: translateY(0%);
+    
+}
+
+.recipe-description:hover {
+    transform: translateY(-60%);
+    opacity: 0.8;
+}
+
+.bottom {
+    transform: translateY(110%);
+    transition: transform 1s ease-in-out;
+    opacity: 0;
+}
+
+.recipe-description:hover .bottom {
+    transform: translateY(0%);
+    opacity:1;
+    background-color: black;
 }
