@@ -85,7 +85,29 @@ h1, h2, h3, p {
 }
 
 .col{
-    background-color: gray;
+    border-radius: .5rem;
+    height: 20.5rem;
+    border: 2px solid white;
     margin-bottom: 16px;
+    align-items: center;
+    text-align: center;
+    position: relative;
 }
 
+.col-img{
+    margin-top: 1rem;
+    width: 100%;
+    height: 50%;
+    background-image: url('dog.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.recipe-description {
+    background-color: gray;
+    font-size: small;
+    margin: 0px;
+    position: absolute;
+    bottom: 0;
+    border-radius: 3px;
+}

@@ -1,1 +1,1 @@
-// Remember that gray background color is temporary
+// Remember to take a look at rem in .cols
