@@ -92,7 +92,7 @@ h1, h2, h3, p {
     align-items: center;
     text-align: center;
     position: relative;
-    
+    user-select: none;
 }
 
 .col-img{

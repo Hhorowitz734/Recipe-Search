@@ -1,4 +1,5 @@
 //Important elements
+cols = document.querySelectorAll('.col');
 title_h3 = document.querySelectorAll('.col-title');
 recipe_images = document.querySelectorAll('.col-img');
 mealtype_text = document.querySelectorAll('.mealtype');
@@ -46,6 +47,7 @@ function setupCardClasses(){
             elementdict['enjoy_your'] = enjoy_your[count];
             elementdict['ingredient1'] = ingredient1[count];
             elementdict['ingredient2'] = ingredient2[count];
+            elementdict['col'] = cols[count];
             
             cardsDisplayed.push(new Card(recipe, elementdict))
 
@@ -63,8 +65,10 @@ function setupCardClasses(){
 setupCardClasses();
 
 class Card {
-    constructor(recipeDict, elementsDict){
-        
+    //Static variable representing which div is being dragged
+    static itemMoving = 0;
+
+    constructor(recipeDict, elementsDict) {
         // Recipe Information
         this.name = recipeDict.Name;
         this.image = recipeDict.Image;
@@ -83,9 +87,19 @@ class Card {
         this.ingredient1 = elementsDict.ingredient1; //Note that this is actually just the category, not ingredients.
         this.ingredient2 = elementsDict.ingredient2;
 
+        // Dragging Variables
+        this.originalPosition = { x: 0, y: 0 };
+        this.offset = { x: 0, y: 0 };
+        this.isDragging = false;
+        this.div.style.position = "relative";
+        this.div.style.transform = "translate(0, 0)";
+
+        this.div.addEventListener("mousedown", (event) => this.startDrag(event));
+        this.div.addEventListener("mouseup", () => this.stopDrag());
+        this.div.addEventListener("mousemove", (event) => this.drag(event));
     }
 
-    setRecipeInformation(){
+    setRecipeInformation() {
         //Sets the recipe up on the card
         this.titleText.innerText = this.name;
         this.recipeImage.style.backgroundImage = `url(${this.image})`;
@@ -95,4 +109,38 @@ class Card {
         this.ingredient1.innerText = 'Category:';
         this.ingredient2.innerText = this.dishtype;
     }
+
+    startDrag(event) {
+        if (Card.itemMoving == 0){
+            this.offset.x = event.clientX;
+            this.offset.y = event.clientY;
+            this.isDragging = true;
+            Card.itemMoving = this.image;
+            this.originalPosition.x = parseFloat(getComputedStyle(this.div).getPropertyValue("transform").split(",")[4]);
+            this.originalPosition.y = parseFloat(getComputedStyle(this.div).getPropertyValue("transform").split(",")[5]);
+            document.querySelectorAll("*").forEach(function(node) {
+                node.style.pointerEvents = "none";
+            });
+            this.div.style.pointerEvents = 'auto';
+        }
+    }
+
+    stopDrag() {
+        this.isDragging = false;
+        this.div.style.transform = `translate(${this.originalPosition.x}px, ${this.originalPosition.y}px)`;
+        Card.itemMoving = 0;
+        document.querySelectorAll("*").forEach(function(node) {
+            node.style.pointerEvents = "auto";
+        });
+    }
+
+    drag(event) {
+        if (this.isDragging) {
+            var newX = event.clientX - this.offset.x + this.originalPosition.x;
+            var newY = event.clientY - this.offset.y + this.originalPosition.y;
+            this.div.style.transform = `translate(${newX}px, ${newY}px)`;
+        }
+    }
+
+
 }
