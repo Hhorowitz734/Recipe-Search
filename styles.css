@@ -92,7 +92,7 @@ h1, h2, h3, p {
     align-items: center;
     text-align: center;
     position: relative;
-    user-select: none;
+    
 }
 
 .col-img{
@@ -114,7 +114,7 @@ h1, h2, h3, p {
     left: 0;
     height: 5rem;
     border-radius: 3px;
-    transition: all 1s ease-in-out;
+    transition: all .5s ease-in-out;
     transform: translateY(0%);
     width: 100%;
     
@@ -127,7 +127,7 @@ h1, h2, h3, p {
 
 .bottom {
     transform: translateY(110%);
-    transition: transform 1s ease-in-out;
+    transition: transform .5s ease-in-out;
     opacity: 0;
     height: 3rem;
     width: 100%;
