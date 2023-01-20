@@ -1,6 +1,11 @@
 //Important elements
 title_h3 = document.querySelectorAll('.col-title');
 recipe_images = document.querySelectorAll('.col-img');
+mealtype_text = document.querySelectorAll('.mealtype');
+calories = document.querySelectorAll('.calories');
+enjoy_your = document.querySelectorAll('.enjoy_div');
+ingredient1 = document.querySelectorAll('.ing1');
+ingredient2 = document.querySelectorAll('.ing2');
 
 
 console.log(getDefaultRecipes());
@@ -15,6 +20,12 @@ async function getDefaultRecipes(){
         let recipeDict = {}
         recipeDict['Name'] = hit.recipe.label;
         recipeDict['Image'] = hit.recipe.image;
+        recipeDict['cuisineType'] = hit.recipe.cuisineType;
+        recipeDict['Calories'] = hit.recipe.calories;
+        recipeDict['Mealtype'] = hit.recipe.mealType;
+        recipeDict['Dishtype'] = hit.recipe.dishType; //Take a look at this
+        console.log(hit.recipe.dishType);
+        //Here make it so that / is changed to ' or ' and , is switched to ' ' in Mealtype
         recipesList.push(recipeDict);
     }
     return recipesList;
@@ -30,7 +41,14 @@ function SetRecipeInformation(){
         recipes.forEach(recipe => {
             title_h3[count].innerText = recipe.Name;
             recipe_images[count].style.backgroundImage = `url(${recipe.Image})`;
-            count += 1
+            mealtype_text[count].innerText = recipe.cuisineType;
+            calories[count].innerText = Math.floor(recipe.Calories);
+            enjoy_your[count].innerText = `Enjoy your ${recipe.Mealtype}!`;
+            ingredient1[count].innerText = 'Category:'
+            ingredient2[count].innerText = recipe.Dishtype;
+            
+            
+            count += 1;
         })
     })
     .catch(error => {

@@ -92,6 +92,7 @@ h1, h2, h3, p {
     align-items: center;
     text-align: center;
     position: relative;
+    user-select: none;
 }
 
 .col-img{
@@ -104,7 +105,7 @@ h1, h2, h3, p {
 }
 
 .recipe-description {
-    background-color: gray;
+    background-color: #4C4948;
     opacity: 0.5;
     font-size: small;
     margin: 0px;
@@ -115,6 +116,7 @@ h1, h2, h3, p {
     border-radius: 3px;
     transition: all 1s ease-in-out;
     transform: translateY(0%);
+    width: 100%;
     
 }
 
@@ -128,6 +130,7 @@ h1, h2, h3, p {
     transition: transform 1s ease-in-out;
     opacity: 0;
     height: 3rem;
+    width: 100%;
 }
 
 .recipe-description:hover .bottom {
@@ -140,4 +143,8 @@ h1, h2, h3, p {
     margin: 5px;
     text-align: center;
     user-select: none;
+}
+
+.bottom b, .bottom h4, .bottom em{
+    color: white;
 }
