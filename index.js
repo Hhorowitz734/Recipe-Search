@@ -11,7 +11,7 @@ async function getDefaultRecipes(){
     //Hits refers to the dicitonary with all information on the recipe
     const hits = data.hits;
     //Iterates over first 8 hits and returns recipes
-    for (let hit of hits.slice(0, 8)){
+    for (let hit of hits.slice(0, 12)){
         let recipeDict = {}
         recipeDict['Name'] = hit.recipe.label;
         recipeDict['Image'] = hit.recipe.image;
