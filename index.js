@@ -99,7 +99,7 @@ class Card {
         this.div.style.transform = "translate(0, 0)";
 
         this.div.addEventListener("mousedown", (event) => this.startDrag(event));
-        this.div.addEventListener("mouseup", () => this.stopDrag());
+        this.div.addEventListener("mouseup", (event) => this.stopDrag(event));
         this.div.addEventListener("mousemove", (event) => this.drag(event));
     }
 
@@ -128,7 +128,7 @@ class Card {
         document.addEventListener("mouseup", () => this.stopDrag());
     }
 
-    stopDrag() {
+    stopDrag(event) {
         if (this.isDragging){
             this.isDragging = false;
             this.div.style.transition = "transform .3s ease-out";
@@ -139,7 +139,10 @@ class Card {
                 node.style.pointerEvents = "auto";
             });
             this.highlightbox.style.backgroundColor = '#4C4948';
-            this.generateNew();
+            let rotation = (event.clientX - this.offset.x) / 1.5;
+            if (rotation <= -30 || rotation >= 30){
+                this.generateNew();
+            }
         }
     }
 
@@ -160,7 +163,6 @@ class Card {
         if (Card.recipeBacklog.length == 0){
             Card.recipeBacklog = await (await fetch('https://api.edamam.com/api/recipes/v2?type=public&beta=true&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&imageSize=REGULAR&random=true')).json();
             Card.recipeBacklog = Card.recipeBacklog.hits;
-            console.log(Card.recipeBacklog);
         }
 
         this.name = Card.recipeBacklog[0].recipe.label;
