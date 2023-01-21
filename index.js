@@ -111,34 +111,36 @@ class Card {
     }
 
     startDrag(event) {
-        if (Card.itemMoving == 0){
+        if (Card.itemMoving == 0) {
             this.offset.x = event.clientX;
-            this.offset.y = event.clientY;
             this.isDragging = true;
             Card.itemMoving = this.image;
-            this.originalPosition.x = parseFloat(getComputedStyle(this.div).getPropertyValue("transform").split(",")[4]);
-            this.originalPosition.y = parseFloat(getComputedStyle(this.div).getPropertyValue("transform").split(",")[5]);
+            this.originalRotation = parseFloat(getComputedStyle(this.div).getPropertyValue("transform").split(",")[1]);
             document.querySelectorAll("*").forEach(function(node) {
                 node.style.pointerEvents = "none";
             });
             this.div.style.pointerEvents = 'auto';
         }
+        document.addEventListener("mouseup", () => this.stopDrag());
     }
 
     stopDrag() {
-        this.isDragging = false;
-        this.div.style.transform = `translate(${this.originalPosition.x}px, ${this.originalPosition.y}px)`;
-        Card.itemMoving = 0;
-        document.querySelectorAll("*").forEach(function(node) {
-            node.style.pointerEvents = "auto";
-        });
+        if (this.isDragging){
+            this.isDragging = false;
+            this.div.style.transition = "transform 0.3s ease-out";
+            // Return card to its original position
+            this.div.style.transform = `rotate(${this.originalRotation}deg)`;
+            Card.itemMoving = 0;
+            document.querySelectorAll("*").forEach(function(node) {
+                node.style.pointerEvents = "auto";
+            });
+        }
     }
 
     drag(event) {
         if (this.isDragging) {
-            var newX = event.clientX - this.offset.x + this.originalPosition.x;
-            var newY = event.clientY - this.offset.y + this.originalPosition.y;
-            this.div.style.transform = `translate(${newX}px, ${newY}px)`;
+            var rotation = (event.clientX - this.offset.x) / 3;
+            this.div.style.transform = `rotate(${rotation}deg)`;
         }
     }
 
