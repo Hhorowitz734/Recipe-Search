@@ -50,6 +50,11 @@ h1, h2, h3, p {
     }
 }
 
+@media (max-width: 600px) {
+    .nav-menu a{display:none};
+}
+
+  
 .navbar{
     width: 95%;
     margin: auto;
@@ -83,6 +88,24 @@ h1, h2, h3, p {
     grid-gap: 16px;
     grid-template-columns: repeat(6, 1fr);
 }
+
+@media only screen and (min-width: 851px) {
+    .recipe-grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 850px) {
+    .recipe-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media only screen and (max-width: 599px) {
+    .recipe-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
 .col{
     border-radius: .5rem;
