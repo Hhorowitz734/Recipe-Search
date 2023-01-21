@@ -7,6 +7,7 @@ calories = document.querySelectorAll('.calories');
 enjoy_your = document.querySelectorAll('.enjoy_div');
 ingredient1 = document.querySelectorAll('.ing1');
 ingredient2 = document.querySelectorAll('.ing2');
+recipehighlightbox = document.querySelectorAll('.recipe-description');
 
 
 //Retrieves default recipes from API when page is loaded in
@@ -48,6 +49,7 @@ function setupCardClasses(){
             elementdict['ingredient1'] = ingredient1[count];
             elementdict['ingredient2'] = ingredient2[count];
             elementdict['col'] = cols[count];
+            elementdict['highlightbox'] = recipehighlightbox[count];
             
             cardsDisplayed.push(new Card(recipe, elementdict))
 
@@ -86,6 +88,7 @@ class Card {
         this.enjoyYour = elementsDict.enjoy_your;
         this.ingredient1 = elementsDict.ingredient1; //Note that this is actually just the category, not ingredients.
         this.ingredient2 = elementsDict.ingredient2;
+        this.highlightbox = elementsDict.highlightbox;
 
         // Dragging Variables
         this.originalPosition = { x: 0, y: 0 };
@@ -127,20 +130,27 @@ class Card {
     stopDrag() {
         if (this.isDragging){
             this.isDragging = false;
-            this.div.style.transition = "transform 0.3s ease-out";
+            this.div.style.transition = "transform .3s ease-out";
             // Return card to its original position
             this.div.style.transform = `rotate(${this.originalRotation}deg)`;
             Card.itemMoving = 0;
             document.querySelectorAll("*").forEach(function(node) {
                 node.style.pointerEvents = "auto";
             });
+            this.highlightbox.style.backgroundColor = '#4C4948';
         }
     }
 
     drag(event) {
         if (this.isDragging) {
-            var rotation = (event.clientX - this.offset.x) / 3;
+            var rotation = (event.clientX - this.offset.x) / 1.5;
             this.div.style.transform = `rotate(${rotation}deg)`;
+            if (rotation >= 0){
+                this.highlightbox.style.backgroundColor = `rgb(${0}, ${rotation * 7}, ${0})`;
+            }
+            else {
+                this.highlightbox.style.backgroundColor = `rgb(${rotation * -7}, ${0}, ${0})`
+            }
         }
     }
 
