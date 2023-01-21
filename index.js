@@ -69,6 +69,7 @@ setupCardClasses();
 class Card {
     //Static variable representing which div is being dragged
     static itemMoving = 0;
+    static recipeBacklog = []
 
     constructor(recipeDict, elementsDict) {
         // Recipe Information
@@ -138,12 +139,13 @@ class Card {
                 node.style.pointerEvents = "auto";
             });
             this.highlightbox.style.backgroundColor = '#4C4948';
+            this.generateNew();
         }
     }
 
     drag(event) {
         if (this.isDragging) {
-            var rotation = (event.clientX - this.offset.x) / 1.5;
+            let rotation = (event.clientX - this.offset.x) / 1.5;
             this.div.style.transform = `rotate(${rotation}deg)`;
             if (rotation >= 0){
                 this.highlightbox.style.backgroundColor = `rgb(${0}, ${rotation * 7}, ${0})`;
@@ -154,5 +156,22 @@ class Card {
         }
     }
 
+    async generateNew(){
+        if (Card.recipeBacklog.length == 0){
+            Card.recipeBacklog = await (await fetch('https://api.edamam.com/api/recipes/v2?type=public&beta=true&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&imageSize=REGULAR&random=true')).json();
+            Card.recipeBacklog = Card.recipeBacklog.hits;
+            console.log(Card.recipeBacklog);
+        }
+
+        this.name = Card.recipeBacklog[0].recipe.label;
+        this.image = Card.recipeBacklog[0].recipe.image;
+        this.cuisineType = Card.recipeBacklog[0].recipe.cuisineType;
+        this.calories = Card.recipeBacklog[0].recipe.calories;
+        this.mealtype = Card.recipeBacklog[0].recipe.mealType;
+        this.dishtype = Card.recipeBacklog[0].recipe.dishType;
+        
+        this.setRecipeInformation();
+        Card.recipeBacklog.shift();
+    }
 
 }
