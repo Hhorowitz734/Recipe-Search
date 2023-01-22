@@ -16,14 +16,13 @@ async function getDefaultRecipes(meal_type){
     let recipesList = []
     let data;
     if (meal_type == 'all'){
-        data = await (await fetch("https://api.edamam.com/api/recipes/v2?type=public&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&mealType=Breakfast&mealType=Dinner&mealType=Lunch&mealType=Snack&mealType=Teatime")).json();
+        data = await (await fetch("https://api.edamam.com/api/recipes/v2?type=public&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&mealType=Breakfast&mealType=Dinner&mealType=Lunch&mealType=Snack&mealType=Teatime&random=true")).json();
     }
     else {
-        data = await (await fetch(`https://api.edamam.com/api/recipes/v2?type=public&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&mealType=${meal_type}`)).json();
+        data = await (await fetch(`https://api.edamam.com/api/recipes/v2?type=public&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&mealType=${meal_type}&random=true`)).json();
     }
         //Hits refers to the dicitonary with all information on the recipe
     const hits = data.hits;
-    console.log(data);
     //Iterates over first 8 hits and returns recipes
     for (let hit of hits.slice(0, 12)){
         let recipeDict = {}
@@ -41,7 +40,7 @@ async function getDefaultRecipes(meal_type){
 
 function setupCardClasses(meal_type){
     //Currently generates randomly, can be adjusted later --> This can me modified by changing function below
-    getDefaultRecipes(meal_type).then(recipes => {
+    getDefaultRecipes(foodselector.value).then(recipes => {
         //Iterates over each recipe provided by API, sets it up with elements in a Card object.
         let count = 0;
 
@@ -77,6 +76,7 @@ class Card {
     //Static variable representing which div is being dragged
     static itemMoving = 0;
     static recipeBacklog = []
+    static currentRecipeType = 'all';
 
     constructor(recipeDict, elementsDict) {
         // Recipe Information
@@ -167,11 +167,18 @@ class Card {
     }
 
     async generateNew(){
-        if (Card.recipeBacklog.length == 0){
-            Card.recipeBacklog = await (await fetch('https://api.edamam.com/api/recipes/v2?type=public&beta=true&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&imageSize=REGULAR&random=true')).json();
-            Card.recipeBacklog = Card.recipeBacklog.hits;
+        if (Card.recipeBacklog.length == 0 || foodselector.value != Card.currentRecipeType){
+            console.log('here');
+            if (foodselector.value == 'all'){
+                Card.recipeBacklog = await (await fetch('https://api.edamam.com/api/recipes/v2?type=public&beta=true&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&imageSize=REGULAR&random=true')).json();
+            }
+            else {
+                Card.recipeBacklog = await (await fetch(`https://api.edamam.com/api/recipes/v2?type=public&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&mealType=${foodselector.value}`)).json();
+            }
+                Card.recipeBacklog = Card.recipeBacklog.hits;
+                Card.currentRecipeType = foodselector.value;
         }
-
+        
         this.name = Card.recipeBacklog[0].recipe.label;
         this.image = Card.recipeBacklog[0].recipe.image;
         this.cuisineType = Card.recipeBacklog[0].recipe.cuisineType;
@@ -238,5 +245,3 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-
-//NEXT: CHANGE THE METHOD AND THE CALL FOR INDIVIDUAL RECIPES TO MAKE IT MATCH
