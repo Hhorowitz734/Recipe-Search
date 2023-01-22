@@ -11,11 +11,18 @@ recipehighlightbox = document.querySelectorAll('.recipe-description');
 
 
 //Retrieves default recipes from API when page is loaded in
-async function getDefaultRecipes(){
+async function getDefaultRecipes(meal_type){
     let recipesList = []
-    let data = await (await fetch('https://api.edamam.com/api/recipes/v2?type=public&beta=true&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&imageSize=REGULAR&random=true')).json();
-    //Hits refers to the dicitonary with all information on the recipe
+    let data;
+    if (meal_type == 'all'){
+        data = await (await fetch("https://api.edamam.com/api/recipes/v2?type=public&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&mealType=Breakfast&mealType=Dinner&mealType=Lunch&mealType=Snack&mealType=Teatime")).json();
+    }
+    else {
+        data = await (await fetch(`https://api.edamam.com/api/recipes/v2?type=public&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&mealType=${meal_type}`)).json();
+    }
+        //Hits refers to the dicitonary with all information on the recipe
     const hits = data.hits;
+    console.log(data);
     //Iterates over first 8 hits and returns recipes
     for (let hit of hits.slice(0, 12)){
         let recipeDict = {}
@@ -31,14 +38,13 @@ async function getDefaultRecipes(){
     return recipesList;
 }
 
-function setupCardClasses(){
+function setupCardClasses(meal_type){
     //Currently generates randomly, can be adjusted later --> This can me modified by changing function below
-    getDefaultRecipes().then(recipes => {
+    getDefaultRecipes(meal_type).then(recipes => {
         //Iterates over each recipe provided by API, sets it up with elements in a Card object.
         let count = 0;
 
         let cardsDisplayed = [] //List representing cards currently displayed on screen
-
         recipes.forEach(recipe => {
             elementdict = {}
             elementdict['title_h3'] = title_h3[count];
@@ -64,7 +70,7 @@ function setupCardClasses(){
     });
 }
 
-setupCardClasses();
+setupCardClasses('all');
 
 class Card {
     //Static variable representing which div is being dragged
@@ -177,6 +183,21 @@ class Card {
     }
 
 }
+
+// Event Listeners for Pulldown Menus
+// Food Menu
+const foodselector = document.querySelector('.foodselector');
+foodselector.addEventListener('change', () => {
+    setupCardClasses(foodselector.value);
+})
+
+
+
+
+
+
+
+
 
 // Website responsiveness code
 document.addEventListener("DOMContentLoaded", function() {
