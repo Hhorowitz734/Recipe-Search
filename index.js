@@ -168,12 +168,11 @@ class Card {
 
     async generateNew(){
         if (Card.recipeBacklog.length == 0 || foodselector.value != Card.currentRecipeType){
-            console.log('here');
             if (foodselector.value == 'all'){
                 Card.recipeBacklog = await (await fetch('https://api.edamam.com/api/recipes/v2?type=public&beta=true&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&imageSize=REGULAR&random=true')).json();
             }
             else {
-                Card.recipeBacklog = await (await fetch(`https://api.edamam.com/api/recipes/v2?type=public&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&mealType=${foodselector.value}`)).json();
+                Card.recipeBacklog = await (await fetch(`https://api.edamam.com/api/recipes/v2?type=public&app_id=93d1c4ab&app_key=163e394acf18c25c3cca0e802ac15dc5&mealType=${foodselector.value}&random=true`)).json();
             }
                 Card.recipeBacklog = Card.recipeBacklog.hits;
                 Card.currentRecipeType = foodselector.value;
