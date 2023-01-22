@@ -8,6 +8,7 @@ enjoy_your = document.querySelectorAll('.enjoy_div');
 ingredient1 = document.querySelectorAll('.ing1');
 ingredient2 = document.querySelectorAll('.ing2');
 recipehighlightbox = document.querySelectorAll('.recipe-description');
+const foodselector = document.querySelector('.foodselector');
 
 
 //Retrieves default recipes from API when page is loaded in
@@ -186,7 +187,6 @@ class Card {
 
 // Event Listeners for Pulldown Menus
 // Food Menu
-const foodselector = document.querySelector('.foodselector');
 foodselector.addEventListener('change', () => {
     setupCardClasses(foodselector.value);
 })
@@ -237,3 +237,6 @@ document.addEventListener("DOMContentLoaded", function() {
         return newSelect;
     }
 });
+
+
+//NEXT: CHANGE THE METHOD AND THE CALL FOR INDIVIDUAL RECIPES TO MAKE IT MATCH

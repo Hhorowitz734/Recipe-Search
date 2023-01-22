@@ -116,6 +116,7 @@ h1, h2, h3, p {
     position: absolute;
     left: 0;
     margin: 15px;
+    pointer-events: none;
 }
 
 .navselector select{
@@ -148,6 +149,7 @@ h1, h2, h3, p {
 @media only screen and (max-width:900px){
     .navselector{
         width: 48%;
+        pointer-events: auto;
     }
     .selector{
         width: 48%;
@@ -162,6 +164,12 @@ h1, h2, h3, p {
         display: none;
     }
   }
+
+@media only screen and (min-width:901px){
+    .navselector{
+        pointer-events: none;
+    }
+}
 
 .home, .about{
     height:720px;
