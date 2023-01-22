@@ -171,8 +171,8 @@ h1, h2, h3, p {
     }
 }
 
-.home, .about{
-    height:720px;
+.home{
+    height:100%;
     margin-top: 70px;
     border: 1px solid white;
 }
