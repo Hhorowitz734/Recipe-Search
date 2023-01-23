@@ -7,6 +7,8 @@ let state = 0 //State of the website - 0 - Currently Login 1 - Currently Registe
 const signintxt = document.querySelector('.signintxt');
 const submitbtn = document.querySelector('.submitbtn');
 const loginform = document.querySelector('.loginform');
+const usernameinput = document.querySelector('.usernameinput');
+const passwordinput = document.querySelector('.passwordinput');
 let emailinput;
 
 // Website responsiveness code
@@ -86,3 +88,24 @@ registertgl.addEventListener('click', (event)=>{
     }
     state = Math.abs(state - 1);
 })
+
+//Code to process user login and registration
+submitbtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (state == 0){
+        executeUserLogin();  //BUILD OUT THIS FUNCTION
+    }
+    else{
+        executeUserRegister(); // BUILD OUT THIS FUNCTION
+    }
+})
+
+async function executeUserRegister(){
+    //Get values from form
+    const email = emailinput.value;
+    const username = usernameinput.value;
+    const password = passwordinput.value;
+    
+    
+
+}
