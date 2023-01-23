@@ -129,6 +129,7 @@ header{
     height:700px;
     margin-top: 70px;
     border-top: 1px solid white;
+    user-select: none;
 }
 
 form{

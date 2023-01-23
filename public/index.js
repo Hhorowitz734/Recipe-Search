@@ -241,7 +241,21 @@ document.addEventListener("DOMContentLoaded", function() {
         newSelect.appendChild(signinOption);
         var navselector = document.getElementById("navselector");
         navselector.appendChild(newSelect);
+        createSelectListener(newSelect);
         return newSelect;
     }
 });
 
+function createSelectListener(newSelect){
+    newSelect.addEventListener('change', () => {
+        console.log('here');
+        if (newSelect.value == 'Home'){
+            window.location = "/";
+        }
+        else if (newSelect.value == 'Deck'){
+            window.location = "/"
+        }
+        else {
+            window.location = "/login";
+        }
+})}
