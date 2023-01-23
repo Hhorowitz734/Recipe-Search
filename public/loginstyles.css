@@ -11,7 +11,7 @@ body {
     font-family: 'Manrope', sans-serif;
 }
 
-h1, h2, h3, p {
+h1, h2, h3, p, a {
     color: white;
 }
 
@@ -126,7 +126,59 @@ header{
 }
 
 .login{
-    height:720px;
+    height:700px;
     margin-top: 70px;
-    border: 1px solid white;
+    border-top: 1px solid white;
+}
+
+form{
+    width: 400px;
+    padding: 40px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid #F0BB32;
+    border-radius: 5px;
+    text-align: center;
+}
+
+form h1{
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 2rem;
+}
+
+form input[type='text'], form input[type='password']{
+    border: 1px solid #F0BB32;
+    border-radius: 10px;
+    height: 3rem;
+    margin: 10px auto;
+    width: 80%;
+    background: none;
+    text-align: center;
+    font-size: 15px;
+    color:white;
+    outline: none;
+    
+    
+}
+
+form input[type="submit"]{
+    border:2px solid #F0BB32;
+    border-radius: 10px;
+    background: none;
+    color:white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 20px;
+    font-weight: 200;
+    margin: 10px;
+    width: 40%;
+    height: 3rem;
+    cursor: pointer;
+}
+
+form input[type="submit"]:hover{
+    background-color: #F0BB32;
+    color:black;
 }
