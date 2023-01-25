@@ -10,6 +10,9 @@ ingredient2 = document.querySelectorAll('.ing2');
 recipehighlightbox = document.querySelectorAll('.recipe-description');
 const foodselector = document.querySelector('.foodselector');
 
+let isLoggedIn = false;
+
+
 
 //Retrieves default recipes from API when page is loaded in
 async function getDefaultRecipes(meal_type){
@@ -235,11 +238,12 @@ document.addEventListener("DOMContentLoaded", function() {
         var deckLink = document.getElementById("deck").querySelector("a");
         deckOption.appendChild(deckLink.cloneNode(true));
         newSelect.appendChild(deckOption);
-        // BEFORE THIS, CHECK IF USER IS ALREADY LOGGED IN
-        var signinOption = document.createElement("option");
-        var signinLink = document.getElementById("signin").querySelector("a");
-        signinOption.appendChild(signinLink.cloneNode(true));
-        newSelect.appendChild(signinOption);
+        if (!isLoggedIn){
+            var signinOption = document.createElement("option");
+            var signinLink = document.getElementById("signin").querySelector("a");
+            signinOption.appendChild(signinLink.cloneNode(true));
+            newSelect.appendChild(signinOption);
+        }
         var navselector = document.getElementById("navselector");
         navselector.appendChild(newSelect);
         createSelectListener(newSelect);
@@ -260,3 +264,31 @@ function createSelectListener(newSelect){
             window.location = "/login";
         }
 })}
+
+
+// Checks if user is logged in
+document.addEventListener("DOMContentLoaded", () => {
+    if(document.cookie.indexOf("token") >= 0) {
+        const token = ('; '+document.cookie).split(`; token=`).pop().split(';')[0];
+        fetch('/api/validate-token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'ok') {
+              document.getElementById('signin').remove();
+              isLoggedIn = true;
+            } else {
+              console.log(data.error); // logged the error message
+            }
+          })
+          .catch(error => console.log(error));
+    } else {
+        console.log("Not logged in yet.");
+    }
+    
+    //Here, get the cookie token (if it exists) and validate it against the backend
+    //Then, if it is valid, remove the signin text, and don't render a 'log in' option in the dropdown
+})

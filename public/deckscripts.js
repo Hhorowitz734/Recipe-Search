@@ -27,3 +27,6 @@ function cleanText(){
 function loggedIn(){
     bigtext.innerText = ``;
 }
+
+
+//Checks if user is logged in

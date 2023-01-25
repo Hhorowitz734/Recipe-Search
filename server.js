@@ -5,6 +5,7 @@ const User = require('./model/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'ewrbwerbiwue#@$@#$rhiwuherw@#%$@iuheriwuhrbiuwbriuwberiwuberiuwbriuewbriuwberiuwbriuwbriuwbriubwr';
+const Cookies = require('js-cookie');
 mongoose.connect('mongodb://localhost:27017/recipe-app-data', {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -81,6 +82,8 @@ app.post('/api/login', async (req, res) => {
 
         const token = jwt.sign({id: user._id, username: user.username}, JWT_SECRET);
         
+        res.cookie('token', token);
+
         return res.json({status: 'ok', data: token});
     }
     else {
@@ -89,3 +92,24 @@ app.post('/api/login', async (req, res) => {
 
 })
 
+// Checks user signin data
+app.post('/api/validate-token', async (req, res) => {
+    const token = req.body.token;
+
+    if (!token) {
+        return res.json({status: 'error', error: 'No token provided'});
+    }
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const user = await User.findById(decoded.id).lean();
+
+        if (!user) {
+            return res.json({status: 'error', error: 'Invalid token'});
+        }
+
+        return res.json({status: 'ok', data: {username: user.username}});
+    } catch (error) {
+        return res.json({status: 'error', error: 'Invalid token'});
+    }
+});
