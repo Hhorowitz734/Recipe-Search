@@ -132,9 +132,17 @@ async function executeUserRegister(){
     }).then((res) => res.json());
 
     if (result.status == 'ok'){
-        console.log('Success!');
+        executeUserLogin();
     } else{
-        alert(result.error); //Replace this with code to alert user
+        if (result.error == 'Invalid password'){
+            passwordinput.style.border = '1px solid red';
+        }
+        else if (result.error == 'Invalid email'){
+            emailinput.style.border = '1px solid red';
+        }
+        else {
+            usernameinput.style.border = '1px solid red';
+        }
     }
 
 }
@@ -155,9 +163,10 @@ async function executeUserLogin(){
     }).then((res) => res.json());
 
     if (result.status == 'ok'){
-        console.log('Got the token: ', result.data); // User logged in
+        window.location = "/"
     } else{
-        alert(result.error); //Replace this with code to alert user
+        usernameinput.style.border = '1px solid red';
+        passwordinput.style.border = '1px solid red';
     }
 
 }
