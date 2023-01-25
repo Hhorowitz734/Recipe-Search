@@ -235,6 +235,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var deckLink = document.getElementById("deck").querySelector("a");
         deckOption.appendChild(deckLink.cloneNode(true));
         newSelect.appendChild(deckOption);
+        // BEFORE THIS, CHECK IF USER IS ALREADY LOGGED IN
         var signinOption = document.createElement("option");
         var signinLink = document.getElementById("signin").querySelector("a");
         signinOption.appendChild(signinLink.cloneNode(true));

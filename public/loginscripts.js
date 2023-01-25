@@ -59,7 +59,7 @@ function createSelectListener(newSelect){
             window.location = "/";
         }
         else if (newSelect.value == 'Deck'){
-            window.location = "/"
+            window.location = "/deck"
         }
         else {
             window.location = "/login";
@@ -98,6 +98,19 @@ submitbtn.addEventListener('click', (event) => {
     else{
         executeUserRegister(); // BUILD OUT THIS FUNCTION
     }
+
+    let cookies = document.cookie;
+    let loggedInCookie = cookies.split(';').find(c => c.trim().startsWith('loggedIn='));
+
+    if (loggedInCookie) {
+        let loggedInValue = loggedInCookie.split('=')[1];
+    
+        if (loggedInValue != 'false') {
+            window.location = "/";
+        }
+    }
+
+
 })
 
 async function executeUserRegister(){
@@ -106,6 +119,45 @@ async function executeUserRegister(){
     const username = usernameinput.value;
     const password = passwordinput.value;
     
-    
+    const result = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username,
+            password,
+            email
+        })
+    }).then((res) => res.json());
+
+    if (result.status == 'ok'){
+        console.log('Success!');
+    } else{
+        alert(result.error); //Replace this with code to alert user
+    }
+
+}
+
+async function executeUserLogin(){
+    const username = usernameinput.value;
+    const password = passwordinput.value;
+
+    const result = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username,
+            password
+        })
+    }).then((res) => res.json());
+
+    if (result.status == 'ok'){
+        console.log('Got the token: ', result.data); // User logged in
+    } else{
+        alert(result.error); //Replace this with code to alert user
+    }
 
 }
