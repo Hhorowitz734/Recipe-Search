@@ -1,6 +1,9 @@
+//Elements
 const bigtext = document.querySelector('.bigtext');
 const smalltext = document.querySelector('.smalltext');
 const arrow = document.querySelector('.arrow');
+const deckview = document.querySelector('.deck');
+const textarea = document.querySelector('.textarea');
 
 let isLoggedIn = false;
 
@@ -118,3 +121,19 @@ function createSelectListener(newSelect){
         }
 })}
 
+//Handles text being clicked
+textarea.addEventListener('click', () => {
+        if (isLoggedIn){
+        let topPos = deckview.getBoundingClientRect().top;
+
+        // Scroll the window smoothly to the element
+        window.scroll({
+        top: topPos,
+        left: 0,
+        behavior: 'smooth'
+    });
+    }
+    else{
+        window.location = "/login";
+    }
+})

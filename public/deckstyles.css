@@ -143,4 +143,9 @@ header{
     margin-left: 10px;
 }
 
+.deck{
+    height:750px;
+    margin-top: 70px;
+    user-select: none;
+}
 
