@@ -113,3 +113,28 @@ app.post('/api/validate-token', async (req, res) => {
         return res.json({status: 'error', error: 'Invalid token'});
     }
 });
+
+// Adds cards to user schema
+async function addCardsToUser(password, cardList) {
+    try {
+        const decoded = jwt.verify(password, JWT_SECRET);
+        const user = await User.findOne({decoded});
+        user.deck.cardList = [...user.deck.cardList, ...cardList, ...tempCardList];
+        await user.save();
+        return true;
+    } catch (error) {
+        //console.log(error);
+        return false;
+    }
+  };
+
+//Cardlist here for a user that isn't logged in
+let tempCardList = [];
+
+// Handles frontend sending cardlist to backend
+app.post('/api/addCards', async (req, res) => {
+    const { cardList, username } = req.body;
+    console.log(cardList)
+    await addCardsToUser(username, cardList);
+
+  });

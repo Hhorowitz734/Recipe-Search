@@ -12,7 +12,8 @@ const foodselector = document.querySelector('.foodselector');
 
 let isLoggedIn = false;
 
-
+// List of swiped recipes
+recipeSwipedList = [];
 
 //Retrieves default recipes from API when page is loaded in
 async function getDefaultRecipes(meal_type){
@@ -35,6 +36,7 @@ async function getDefaultRecipes(meal_type){
         recipeDict['calories'] = hit.recipe.calories;
         recipeDict['Mealtype'] = hit.recipe.mealType;
         recipeDict['Dishtype'] = hit.recipe.dishType; //Take a look at this
+        recipeDict['link'] = 'www.google.com' //INSERT LINK HERE
         //Here make it so that / is changed to ' or ' and , is switched to ' ' in Mealtype
         recipesList.push(recipeDict);
     }
@@ -82,6 +84,9 @@ class Card {
     static currentRecipeType = 'all';
 
     constructor(recipeDict, elementsDict) {
+        // Recipe Dictionary
+        this.recipeDict = recipeDict;
+
         // Recipe Information
         this.name = recipeDict.Name;
         this.image = recipeDict.Image;
@@ -150,7 +155,12 @@ class Card {
             });
             this.highlightbox.style.backgroundColor = '#4C4948';
             let rotation = (event.clientX - this.offset.x) / 1.5;
-            if (rotation <= -30 || rotation >= 30){
+            if (rotation <= -30){
+                this.generateNew();
+            }
+            if (rotation >= 30){
+                console.log(this.recipeDict);
+                recipeSwipedList.push(this.recipeDict);
                 this.generateNew();
             }
         }
@@ -189,9 +199,12 @@ class Card {
         this.mealtype = Card.recipeBacklog[0].recipe.mealType;
         this.dishtype = Card.recipeBacklog[0].recipe.dishType;
         
+        //DONT FORGET TO MAKE NEW RECIPEDICT HERE
+
         this.setRecipeInformation();
         Card.recipeBacklog.shift();
     }
+
 
 }
 
@@ -292,3 +305,39 @@ document.addEventListener("DOMContentLoaded", () => {
     //Here, get the cookie token (if it exists) and validate it against the backend
     //Then, if it is valid, remove the signin text, and don't render a 'log in' option in the dropdown
 })
+
+
+//WRITE A FUNCTION THAT SENDS THE LIST OF DICTIONARIES TO THE BACKEND WHEN THE USER LEAVES THIS PAGE
+//THEN In THE BACKEND, IF A USER IS LOGGED IN ADD THIS TO THEIR DECK, OTHERWISE SAVE THEM FOR WHEN THEY DO LOG IN
+// Sends card list
+const sendCardList = (cardList) => {
+    fetch('/api/addCards', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        cardList,
+        password: ('; '+document.cookie).split(`; token=`).pop().split(';')[0] //DONT FORGET WE NEED TO CHANGE THIS TO PASSWORD AND THEN UNHASH IT IN SERVER AND THEN IF THE USER ISNT LOGGED IN JUST TAKE THE LIST
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+  
+  window.onbeforeunload = function (){
+      if (checkForToken('token')){
+        sendCardList(recipeSwipedList);
+      }
+  }
+
+  function checkForToken(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+}
