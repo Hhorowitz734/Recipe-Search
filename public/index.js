@@ -280,7 +280,7 @@ function createSelectListener(newSelect){
             window.location = "/";
         }
         else if (newSelect.value == 'Deck'){
-            window.location = "/"
+            window.location = "/deck"
         }
         else {
             window.location = "/login";
@@ -348,5 +348,6 @@ const sendCardList = (cardList) => {
   function checkForToken(name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
-    if (parts.length == 2) return parts.pop().split(";").shift();
+    if (parts.length == 2) return true;
+    return false;
 }

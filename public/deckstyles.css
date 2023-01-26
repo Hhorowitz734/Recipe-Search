@@ -149,3 +149,71 @@ header{
     user-select: none;
 }
 
+.card-grid{
+    display: block;
+    padding: 16px;
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+@media only screen and (min-width: 851px) {
+    .card-grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+
+  @media only screen and (min-width: 600px) and (max-width: 850px) {
+    .card-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media only screen and (max-width: 599px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .col{
+    border-radius: .5rem;
+    height: 20.5rem;
+    border: 2px solid white;
+    margin-bottom: 16px;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    user-select: none;
+}
+
+.col-img{
+    margin-top: 1rem;
+    width: 100%;
+    height: 50%;
+    background-image: url('dog.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.col-bottom {
+    align-items: center;
+}
+
+.checkout {
+    margin-top: 30px;
+    border:2.5px solid #F0BB32;
+    border-radius: 10px;
+    background: none;
+    color:white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    width: 80%;
+    height: 4rem;
+    cursor: pointer;
+}
+
+.checkout:hover {
+    background-color: #F0BB32;
+    color:black;
+}

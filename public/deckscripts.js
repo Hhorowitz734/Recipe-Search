@@ -1,9 +1,11 @@
+
 //Elements
 const bigtext = document.querySelector('.bigtext');
 const smalltext = document.querySelector('.smalltext');
 const arrow = document.querySelector('.arrow');
 const deckview = document.querySelector('.deck');
 const textarea = document.querySelector('.textarea');
+const deckgrid = document.querySelector('.card-grid');
 
 let isLoggedIn = false;
 
@@ -114,7 +116,7 @@ function createSelectListener(newSelect){
             window.location = "/";
         }
         else if (newSelect.value == 'Deck'){
-            window.location = "/deck"
+            window.location = "/deck";
         }
         else {
             window.location = "/login";
@@ -137,3 +139,35 @@ textarea.addEventListener('click', () => {
         window.location = "/login";
     }
 })
+
+//Creates cards for deck
+function createCards(cardlist){
+    for (let card of cardlist){
+        var col = document.createElement("div");
+        col.classList.add("col");
+
+        var colTitle = document.createElement("h3");
+        colTitle.classList.add("col-title");
+        colTitle.innerHTML = "Col1";
+
+        var colImg = document.createElement("div");
+        colImg.classList.add("col-img");
+
+        var colBottom = document.createElement("div");
+        colBottom.classList.add("col-bottom");
+
+        var checkout = document.createElement("button");
+        checkout.classList.add("checkout");
+        checkout.innerHTML = "Recipe";
+
+        colBottom.appendChild(checkout);
+        col.appendChild(colTitle);
+        col.appendChild(colImg);
+        col.appendChild(colBottom);
+
+        deckgrid.appendChild(col);
+
+        console.log('here');
+}   }
+
+createCards([0, 1, 2, 3, 4, 5, 6, 7, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2,2, 2, 2 ]);
