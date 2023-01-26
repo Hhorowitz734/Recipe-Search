@@ -36,7 +36,7 @@ async function getDefaultRecipes(meal_type){
         recipeDict['calories'] = hit.recipe.calories;
         recipeDict['Mealtype'] = hit.recipe.mealType;
         recipeDict['Dishtype'] = hit.recipe.dishType; //Take a look at this
-        recipeDict['link'] = hit.recipe.url; //INSERT LINK HERE
+        recipeDict['Link'] = hit.recipe.url; //INSERT LINK HERE
         //Here make it so that / is changed to ' or ' and , is switched to ' ' in Mealtype
         recipesList.push(recipeDict);
     }
@@ -94,7 +94,7 @@ class Card {
         this.calories = recipeDict.calories;
         this.mealtype = recipeDict.Mealtype;
         this.dishtype = recipeDict.Dishtype;
-        this.link = recipeDict.link;
+        this.link = recipeDict.Link;
 
         // Element Information
         this.div = elementsDict.col;

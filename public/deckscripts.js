@@ -8,6 +8,7 @@ const textarea = document.querySelector('.textarea');
 const deckgrid = document.querySelector('.card-grid');
 
 let isLoggedIn = false;
+let cards = []
 
 //Script for text management
 bigtext.addEventListener('mouseover', colorText);
@@ -141,17 +142,38 @@ textarea.addEventListener('click', () => {
 })
 
 //Creates cards for deck
-function createCards(cardlist){
-    for (let card of cardlist){
+async function createCards(){
+    const cardlist = await sendCards();
+    console.log(cardlist);
+    for (let carddict of cardlist){
+        cards.push(new Card(carddict));
+        cards[cards.length - 1].createCard();
+    }
+}
+
+class Card {
+
+
+    constructor(recipeDict){
+        
+        // Recipe Information
+        console.log(recipeDict);
+        this.name = recipeDict.Name;
+        this.image = recipeDict.Image;
+        this.link = recipeDict.Link;
+    }
+
+    createCard(){
         var col = document.createElement("div");
         col.classList.add("col");
 
         var colTitle = document.createElement("h3");
         colTitle.classList.add("col-title");
-        colTitle.innerHTML = "Col1";
+        colTitle.innerHTML = this.name;
 
         var colImg = document.createElement("div");
         colImg.classList.add("col-img");
+        console.log(this.image);
 
         var colBottom = document.createElement("div");
         colBottom.classList.add("col-bottom");
@@ -159,15 +181,51 @@ function createCards(cardlist){
         var checkout = document.createElement("button");
         checkout.classList.add("checkout");
         checkout.innerHTML = "Recipe";
+        this.giveEventListener(checkout);
 
         colBottom.appendChild(checkout);
         col.appendChild(colTitle);
         col.appendChild(colImg);
         col.appendChild(colBottom);
+        colImg.style.backgroundImage = `url(${this.image})`;
 
         deckgrid.appendChild(col);
 
-        console.log('here');
-}   }
+    }
 
-createCards([0, 1, 2, 3, 4, 5, 6, 7, 2, 2, 2, 2, 2, 2, 2, 2,2, 2, 2, 2,2, 2, 2 ]);
+    giveEventListener(button){
+        button.addEventListener('click', (event) => {
+            console.log(this.link);
+            event.preventDefault();
+            window.open(this.link);
+        })
+    }
+
+}
+
+// Retrieves card information from the server
+async function sendCards(){
+    try {
+        const token = getCookie("token");
+        const response = await fetch("/api/sendCards", {
+        method: "POST",
+        body: JSON.stringify({password: token}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+      });
+      const json = await response.json();
+      const data = json.data;
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+const getCookie = (name) => {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+}
+
+createCards();

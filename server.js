@@ -1,3 +1,7 @@
+//Cardlist here for a user that isn't logged in
+let tempCardList = [];
+
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -118,23 +122,36 @@ app.post('/api/validate-token', async (req, res) => {
 async function addCardsToUser(password, cardList) {
     try {
         const decoded = jwt.verify(password, JWT_SECRET);
-        const user = await User.findOne({decoded});
+        const user = await User.findById(decoded.id).exec();
         user.deck.cardList = [...user.deck.cardList, ...cardList, ...tempCardList];
-        await user.save();
+        user.save();
+        tempCardList = []
         return true;
     } catch (error) {
-        //console.log(error);
+        console.log(error, 'this is the problem');
         return false;
     }
   };
 
-//Cardlist here for a user that isn't logged in
-let tempCardList = [];
 
 // Handles frontend sending cardlist to backend
 app.post('/api/addCards', async (req, res) => {
-    const { cardList, username } = req.body;
-    console.log(cardList)
-    await addCardsToUser(username, cardList);
+    const { cardList, password } = req.body;
+    await addCardsToUser(password, cardList);
 
   });
+
+app.post('/api/sendCards', async (req, res) => {
+    const token = req.body.password;
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const user = await User.findById(decoded.id).lean();
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        console.log(user.deck.cardList);
+        return res.status(200).json({ data: user.deck.cardList });
+    } catch (err) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+});
