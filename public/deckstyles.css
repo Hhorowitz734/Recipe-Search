@@ -177,7 +177,7 @@ header{
 
   .col{
     border-radius: .5rem;
-    height: 20.5rem;
+    height: 23rem;
     border: 2px solid white;
     margin-bottom: 16px;
     align-items: center;
@@ -188,6 +188,7 @@ header{
 
 .col-img{
     margin-top: 1rem;
+    margin-bottom: 1rem;
     width: 100%;
     height: 50%;
     background-image: url('dog.png');
@@ -196,11 +197,15 @@ header{
 }
 
 .col-bottom {
+    margin-top: 5px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     align-items: center;
 }
 
 .checkout {
-    margin-top: 30px;
+    margin-bottom: 10px;
     border:2.5px solid #F0BB32;
     border-radius: 10px;
     background: none;

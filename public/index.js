@@ -10,7 +10,7 @@ ingredient2 = document.querySelectorAll('.ing2');
 recipehighlightbox = document.querySelectorAll('.recipe-description');
 const foodselector = document.querySelector('.foodselector');
 
-let isLoggedIn = false;
+let isLoggedIn; //=false
 
 // List of swiped recipes
 recipeSwipedList = [];
@@ -300,7 +300,15 @@ document.addEventListener("DOMContentLoaded", () => {
           .then(response => response.json())
           .then(data => {
             if (data.status === 'ok') {
-              document.getElementById('signin').remove();
+                let signin = document.getElementById('signin');
+                signin.innerText = 'Sign Out';
+                signin.style.cursor = 'pointer';
+                signin.style.color = 'white';
+                signin.addEventListener('click', (event) => {
+                    event.preventDefault;
+                    logOut();
+                    location.reload();
+              })
               isLoggedIn = true;
             } else {
               console.log(data.error); // logged the error message
@@ -350,4 +358,10 @@ const sendCardList = (cardList) => {
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return true;
     return false;
+}
+
+//Logs the user out
+function logOut(){
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    isLoggedIn = false;
 }

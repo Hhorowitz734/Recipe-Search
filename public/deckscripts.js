@@ -36,6 +36,16 @@ function loggedIn(username){
     smalltext.innerText = `Delicious. Classy. Innovative. Click here to see the recipes that ${username} saved.`
     smalltext.style.fontSize = '1.8rem';
     arrow.innerText = "\u2304";
+    let signin = document.getElementById('signin');
+    console.log(signin);
+    signin.innerText = 'Sign Out';
+    signin.style.cursor = 'pointer';
+    signin.style.color = 'white';
+    signin.addEventListener('click', (event) => {
+        event.preventDefault;
+        logOut();
+        location.reload();
+    });
 }
 
 
@@ -51,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
           .then(response => response.json())
           .then(data => {
             if (data.status === 'ok') {
-              document.getElementById('signin').remove();
               isLoggedIn = true; //USE THIS TO HANDLE NAVBAR COMPRESSION
               loggedIn(data.data.username);
             } else {
@@ -229,3 +238,9 @@ const getCookie = (name) => {
 }
 
 createCards();
+
+//Logs the user out
+function logOut(){
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    isLoggedIn = false;
+}
